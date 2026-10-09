@@ -1,0 +1,38 @@
+# --- робочі дані FlyGuard (не для репозиторію) ---
+# навчені моделі
+*.npz
+# зібрані логи
+*.log
+fortiweb_raw.log
+# стан детектора
+alerts.jsonl
+blocklist.txt
+blocklist.*.txt
+*.approved.txt
+# налаштування з секретами (токени, паролі інтеграцій)
+config.json
+flyguard.env
+
+# але зразкові дані для тестів лишаємо в репозиторії
+!data/
+!data/*.log
+!data/*.txt
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# --- віртуальне оточення ---
+venv/
+.venv/
+env/
+
+# --- IDE / ОС ---
+.vscode/
+.idea/
+.DS_Store
+*.swp

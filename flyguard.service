@@ -1,0 +1,28 @@
+# systemd-сервіс FlyGuard. Повна інструкція — у документі «FlyGuard — інструкція з встановлення».
+#   sudo cp /opt/flyguard/flyguard.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now flyguard
+#   journalctl -u flyguard -f
+[Unit]
+Description=FlyGuard - детектор атак на основі мозку мухи (syslog від FortiWeb)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=flyguard
+Group=flyguard
+WorkingDirectory=/opt/flyguard
+# пароль веб-інтерфейсу: рядок FLYGUARD_WEB_PASSWORD=... у файлі /etc/flyguard.env (права 600)
+EnvironmentFile=-/etc/flyguard.env
+ExecStart=/opt/flyguard/venv/bin/python -u -m flyguard listen --udp 5140 --tcp 5141 --web-port 8080
+# пересилання логів далі у SIEM — додайте до ExecStart:  --forward 10.0.0.5:514
+Restart=always
+RestartSec=5
+# посилення безпеки
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/flyguard
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
